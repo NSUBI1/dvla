@@ -86,14 +86,14 @@ VALUES ('{$new_owner_work}', '{$new_owner_address}', '{$new_owner_name}',
             }
 
             $sig_file_dir = 'assets/images/client_image/';
-            $sig_target_file = $sig_file_dir . $_FILES['pre_owner_sig']['name'];
+            $sig_target_file = $sig_file_dir.$_FILES['pre_owner_sig']['name'];
             $sig_tep_file = $_FILES['pre_owner_sig']['tmp_name'];
             $sig_file_size = $_FILES['pre_owner_sig']['size'] / 1000;
             //  $image_size=getimagesize($sig_tep_file);
             // prepare sql and bind parameters
-            $sig_file_extension = strtolower(pathinfo($sig_target_file, PATHINFO_EXTENSION));
-            $sig_new_file = 'sig' . time() . '.' . $sig_file_extension;
-            $sig_new_target_file = $sig_file_dir . $sig_new_file;
+            $sig_file_extension = strtolower(pathinfo($sig_target_file,PATHINFO_EXTENSION));
+            $sig_new_file = 'sig'.time().'.'.$sig_file_extension;
+            $sig_new_target_file = $sig_file_dir.$sig_new_file;
 
 
 
@@ -345,18 +345,18 @@ values ('{$registration_id}','{$vehicle_make}','{$model_name}','{$chassis_number
             } else {
 
                 $sig_file_dir = 'assets/images/client_image/';
-                $sig_target_file = $sig_file_dir . $_FILES['new_owner_signature']['name'];
+                $sig_target_file = $sig_file_dir.$_FILES['new_owner_signature']['name'];
                 $sig_temp_file = $_FILES['new_owner_signature']['tmp_name'];
                 $sig_file_size = $_FILES['new_owner_signature']['size'] / 1000;
                 //  $image_size=getimagesize($sig_tep_file);
                 // prepare sql and bind parameters
                 $sig_file_extension = strtolower(pathinfo($sig_target_file, PATHINFO_EXTENSION));
-                $sig_new_file = 'sig' . time() . '.' . $sig_file_extension;
-                $sig_new_target_file = $sig_file_dir . $sig_new_file;
+                $sig_new_file = 'sig'.time().'.'.$sig_file_extension;
+                $sig_new_target_file = $sig_file_dir.$sig_new_file;
                 $complete_process = query("UPDATE new_registration set status='complete',
-        new_owner_sig='{$sig_new_target_file}'
-         where registration_id='{$registration_id}'");
-                move_uploaded_file($sig_temp_file, '../' . $sig_new_target_file);
+                new_owner_sig='{$sig_new_target_file}'
+                where registration_id='{$registration_id}'");
+                move_uploaded_file($sig_temp_file, '../'.$sig_new_target_file);
                 echo "data stored";
             }
         } else {
@@ -370,25 +370,54 @@ values ('{$registration_id}','{$vehicle_make}','{$model_name}','{$chassis_number
                 if (!$update_query) {
                     die(mysqli_error($con));
                 } else {
-                    $sig_file_dir = 'assets/images/client_image/';
-                    $sig_target_file = $sig_file_dir . $_FILES['new_owner_signature']['name'];
-                    $sig_temp_file = $_FILES['new_owner_signature']['tmp_name'];
-                    $sig_file_size = $_FILES['new_owner_signature']['size'] / 1000;
-                    //  $image_size=getimagesize($sig_tep_file);
-                    // prepare sql and bind parameters
-                    $sig_file_extension = strtolower(pathinfo($sig_target_file, PATHINFO_EXTENSION));
-                    $sig_new_file = 'sig' . time() . '.' . $sig_file_extension;
-                    $sig_new_target_file = $sig_file_dir . $sig_new_file;
-                    $complete_process = query("UPDATE new_registration set status='complete',
-                new_owner_sig='{$sig_new_target_file}'
-                 where registration_id='{$registration_id}'");
-                    move_uploaded_file($sig_temp_file, '../' . $sig_new_target_file);
-                    echo "data stored";
+            //         $sig_file_dir = 'assets/images/client_image/';
+            //         $sig_target_file = $sig_file_dir . $_FILES['new_owner_signature']['name'];
+            //         $sig_temp_file = $_FILES['new_owner_signature']['tmp_name'];
+            //         $sig_file_size = $_FILES['new_owner_signature']['size'] / 1000;
+            //         //  $image_size=getimagesize($sig_tep_file);
+            //         // prepare sql and bind parameters
+            //         $sig_file_extension = strtolower(pathinfo($sig_target_file, PATHINFO_EXTENSION));
+            //         $sig_new_file = 'sig'.time().'.'.$sig_file_extension;
+            //         $sig_new_target_file = $sig_file_dir.$sig_new_file;
+            //         $complete_process = query("UPDATE new_registration set status='complete',
+            //     new_owner_sig='{$sig_new_target_file}'
+            //      where registration_id='{$registration_id}'");
+            //         move_uploaded_file($sig_temp_file, '../'.$sig_new_target_file);
+            //         echo "data stored";
+            //     }
+            // } else {
+            //     echo 'error';
+            // }
+        
+
+            $sig_file_dir = 'assets/images/client_image/';
+            $sig_target_file = $sig_file_dir . $_FILES['new_owner_signature']['name'];
+            $sig_temp_file = $_FILES['new_owner_signature']['tmp_name'];
+            $sig_file_size = $_FILES['new_owner_signature']['size'] / 1000;
+        
+            // Determine the file extension
+            $sig_file_extension = strtolower(pathinfo($sig_target_file, PATHINFO_EXTENSION));
+        
+            // Construct a unique filename
+            $sig_new_file = 'sig' . time() . '.' . $sig_file_extension;
+            $sig_new_target_file = $sig_file_dir . $sig_new_file;
+        
+            $complete_process = query("UPDATE new_registration SET status='complete', new_owner_sig='{$sig_new_target_file}'
+             WHERE registration_id='{$registration_id}'");
+            if ($complete_process){
+                // Move the uploaded file to the destination folder
+                if (move_uploaded_file($sig_temp_file, '../' . $sig_new_target_file)) {
+                    echo "Data stored";
+                } else {
+                    echo 'Error moving file';
                 }
             } else {
-                echo 'error';
+                echo 'Error updating database';
             }
-        }
+                }
+            }
+
+    }
     } else if ($_POST['action'] == 'get_complete_process_1') {
         $registration_id = escape_string($_POST['id']);
         $get_data = query("SELECT * from complete_registration where registration_id='{$registration_id}'");
@@ -1005,13 +1034,13 @@ values ('{$registration_id}','{$vehicle_make}','{$model_name}','{$chassis_number
     $userType = isset($_SESSION['user_type']) ? $_SESSION['user_type'] : '';
 
     if ($userType == 'client') {
-        $query = "SELECT new_registration.decide_registration, new_registration.new_owner_email_address, new_registration.registration_id, new_registration.new_owner_number, new_registration.status, new_registration.date_created, new_registration.new_owner_name
+        $query = "SELECT new_registration.decide_registration,previouse_owner.pre_owner_name, new_registration.new_owner_email_address, new_registration.registration_id, new_registration.new_owner_number, new_registration.status, new_registration.date_created, new_registration.new_owner_name
                   FROM new_registration
                   LEFT JOIN previouse_owner ON previouse_owner.registration_id = new_registration.registration_id
                   LEFT JOIN users ON users.user_id = new_registration.user_id
                   WHERE new_registration.user_id = '{$_SESSION['user_id']}'";
     } else {
-        $query = "SELECT new_registration.decide_registration, new_registration.new_owner_email_address, new_registration.registration_id, new_registration.new_owner_number, new_registration.status, new_registration.date_created, new_registration.new_owner_name
+        $query = "SELECT new_registration.decide_registration,previouse_owner.pre_owner_name, new_registration.new_owner_email_address, new_registration.registration_id, new_registration.new_owner_number, new_registration.status, new_registration.date_created, new_registration.new_owner_name
                   FROM new_registration
                   LEFT JOIN previouse_owner ON previouse_owner.registration_id = new_registration.registration_id
                   LEFT JOIN users ON users.user_id = new_registration.user_id";
@@ -1084,9 +1113,17 @@ values ('{$registration_id}','{$vehicle_make}','{$model_name}','{$chassis_number
                 </button>';
             }
 
+            if($row["pre_owner_name"]==''){
+                $pre_owner_name='No previous Owner';
+            }
+            else{
+                $pre_owner_name=$row["pre_owner_name"];
+            }
+
             $sub_array = array();
             $sub_array[] = $count++;
             $sub_array[] = $row["registration_id"];
+            $sub_array[] =  $pre_owner_name;
             $sub_array[] = $row["new_owner_name"];
             $sub_array[] = $row['new_owner_number'];
             $sub_array[] = $status;

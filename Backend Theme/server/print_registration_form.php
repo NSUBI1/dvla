@@ -341,6 +341,7 @@ else if ($_POST['action']=='get_data'){
                          <div class="pre_owner_img" style="  height: 10rem;width:100%; position: relative; border: 1px solid green;">
                              <img class="img img-fluid new_owner_image" src='.$row['new_owner_file'].' style="height:100%;width:100%; position:absolute;">
                          </div>
+                         <img src='.$row['new_owner_sig'].'>
                      </div>
           
           
@@ -360,6 +361,7 @@ else if ($_POST['action']=='get_data'){
                      <div class="pre_owner_img" style="height:10rem;width:100%; position: relative; border: 1px solid green;">
                      <img class="img img-fluid pre_owner_image" src='.$row['pre_owner_file'].' style="height:100%;width:100%; position:absolute;">
                      </div>
+                     <img src='.$row['pre_owner_sig_file'].' class="img img-fluid">
                  </div>
                  <div class="col-lg-10">
                      <div class="row g-3">
@@ -479,7 +481,7 @@ else if ($_POST['action']=='get_data'){
                          <div class="pre_owner_img" style="  height: 10rem;width:100%; position: relative; border: 1px solid green;">
                              <img class="img img-fluid new_owner_image" src='.$row['new_owner_file'].' style="height:100%;width:100%; position:absolute;">
                          </div>
-          
+                         <img src='.$row['new_owner_sig'].' class="img img-fluid">
                      </div>
           
           

@@ -302,7 +302,15 @@ include('./server/config.php')
 
                                         <div class="col-lg-4">
                                             <h6 class="car-regisration" align="right">
-                                                <button class="btn btn-info btn-sm" data-bs-toggle="modal" data-bs-target=".bs-example-modal-xl" onclick="reg_id()">Start new registration</button>
+                                                <?php
+                                                 if ($_SESSION['user_type']=='client'){
+                                                    echo '<button class="btn btn-info btn-sm" data-bs-toggle="modal"
+                                                     data-bs-target=".bs-example-modal-xl" onclick="reg_id()">Start new registration</button>';
+                                                 }
+                                                else{
+                                                    // do nothing
+                                                }
+                                                ?>
                                             </h6>
 
                                         </div>
@@ -314,7 +322,8 @@ include('./server/config.php')
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Registrition number</th>
-                                                    <th>Full Name</th>
+                                                    <th>Previous Owner</th>
+                                                    <th>New Owner</th>
                                                     <th>Contact number</th>
                                                     <th>Status</th>
                                                     <th>Created date</th>

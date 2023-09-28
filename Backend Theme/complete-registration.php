@@ -593,6 +593,10 @@ include('./server/config.php')
                             text: 'Car registration successful',
                             showConfirmButton: true,
                         })
+
+                        setTimeout(() => {
+                            location.href=`print_completed_data.php?registration_id=${registration_id}&re_type=${decide_registration}`
+                        }, 1000);
                     } else {
                         Swal.fire({
                             icon: 'error',
